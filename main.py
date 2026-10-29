@@ -10,7 +10,7 @@ load_dotenv()
 
 app = Flask(__name__)
 client = Groq(timeout=45.0, max_retries=1)
-MODEL = os.getenv("MODEL", "llama-3.3-70b-versatile")
+MODEL = os.getenv("MODEL", "openai/gpt-oss-120b")
 STT_MODEL = os.getenv("STT_MODEL", "whisper-large-v3-turbo")
 
 SYSTEM = """You are a senior Hotel Revenue Management Executive and Excel expert, acting as a study coach.
@@ -87,7 +87,8 @@ def answer():
             model=MODEL,
             stream=False,
             temperature=0.3,
-            max_tokens=900,
+            max_completion_tokens=1400,
+            reasoning_effort="low",
             messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": question}],
         )
         text = result.choices[0].message.content or ""
