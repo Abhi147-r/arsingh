@@ -82,8 +82,6 @@ def answer():
     question = (data.get("question") or "").strip()
     if not question:
         return jsonify(error="No question was received."), 400
-    if not relevant(question):
-        return jsonify(ignore=True)
     try:
         result = client.chat.completions.create(
             model=MODEL,
